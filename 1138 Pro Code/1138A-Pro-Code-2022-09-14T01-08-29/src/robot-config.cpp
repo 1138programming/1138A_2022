@@ -28,6 +28,10 @@ bool RemoteControlCodeEnabled = true;
 // define variables used for controlling motors based on controller inputs
 bool DrivetrainLNeedsToBeStopped_Controller1 = true;
 bool DrivetrainRNeedsToBeStopped_Controller1 = true;
+bool Controller1LeftShoulderControlMotorsStopped = true;
+bool Controller1RightShoulderControlMotorsStopped = true;
+bool Controller1UpDownButtonsControlMotorsStopped = true;
+bool Controller1XABYButtonsControlMotorsStopped = true;
 
 // define a task that will handle monitoring inputs from Controller1
 int rc_auto_loop_function_Controller1() {
@@ -67,7 +71,6 @@ int rc_auto_loop_function_Controller1() {
         // reset the toggle so that the deadband code knows to stop the right motor next time the input is in the deadband range
         DrivetrainRNeedsToBeStopped_Controller1 = true;
       }
-      
       // only tell the left drive motor to spin if the values are not in the deadband range
       if (DrivetrainLNeedsToBeStopped_Controller1) {
         LeftDriveSmart.setVelocity(drivetrainLeftSideSpeed, percent);
@@ -77,6 +80,50 @@ int rc_auto_loop_function_Controller1() {
       if (DrivetrainRNeedsToBeStopped_Controller1) {
         RightDriveSmart.setVelocity(drivetrainRightSideSpeed, percent);
         RightDriveSmart.spin(forward);
+      }
+      if (Controller1.ButtonL1.pressing()) {
+        Roller.spin(forward, 75, percent);
+        Controller1LeftShoulderControlMotorsStopped = false;
+      } else if (Controller1.ButtonL2.pressing()) {
+        Roller.spin(reverse, 75, percent);
+        Controller1LeftShoulderControlMotorsStopped = false;
+      } else if (!Controller1LeftShoulderControlMotorsStopped) {
+        Roller.stop();
+        // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
+        Controller1LeftShoulderControlMotorsStopped = true;
+      }
+       if (Controller1.ButtonR1.pressing()) {
+        Intake.spin(forward, 75, percent);
+        Controller1RightShoulderControlMotorsStopped = false;
+      } else if (Controller1.ButtonR2.pressing()) {
+        Intake.spin(reverse, 75, percent);
+        Controller1RightShoulderControlMotorsStopped = false;
+      } else if (!Controller1RightShoulderControlMotorsStopped) {
+        Intake.stop();
+        // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
+        Controller1RightShoulderControlMotorsStopped = true;
+      }
+      if (Controller1.ButtonX.pressing()) {
+        // Flywheel.spin(forward, 100, percent);
+        Flywheel.spin(forward , 600, rpm);
+        //Actual Speed: 4200 RPM
+        Controller1XABYButtonsControlMotorsStopped = false;
+      } else if (Controller1.ButtonA.pressing()) {
+        Flywheel.spin(forward , 450, rpm);
+        //Actual Speed: 3150 RPM
+        Controller1XABYButtonsControlMotorsStopped = false;
+      } else if (Controller1.ButtonB.pressing()) {
+        Flywheel.spin(forward , 300, rpm);
+        //Actual Speed: 2100 RPM
+        Controller1XABYButtonsControlMotorsStopped = false;
+      } else if (Controller1.ButtonY.pressing()) {
+        Flywheel.spin(forward , 150, rpm);
+        //Actual speed: 1050 RPM
+        Controller1XABYButtonsControlMotorsStopped = false;  
+      } else if (!Controller1XABYButtonsControlMotorsStopped) {
+        Flywheel.stop();
+        // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
+        Controller1XABYButtonsControlMotorsStopped = true;
       }
     }
     // wait before repeating the process
@@ -121,6 +168,7 @@ int rc_auto_loop_function_Controller2() {
         // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
         Controller2RightShoulderControlMotorsStopped = true;
       }
+      
       // check the X/A/Y/Z buttons status to control Flywheel
 
       if (Controller2.ButtonX.pressing()) {

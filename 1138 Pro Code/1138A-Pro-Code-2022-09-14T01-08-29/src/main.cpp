@@ -56,7 +56,12 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  // ..........................................................................
+  Drivetrain.driveFor(reverse, 10, inches);
+  Roller.spinFor(reverse, 40, msec);
+  Drivetrain.turnFor(right , 80, degrees);
+  Intake.spinFor(forward, 5, rev);
+  Flywheel.spin(forward, 80, percent);
+    // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
 }
