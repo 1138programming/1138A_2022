@@ -7,14 +7,15 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-// ---- START VEXCODE CONFIGURED DEVICES ----
+//XCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
 // Controller1          controller                    
-// Drivetrain           drivetrain    11, 2, 3, 20, 19
+// Drivetrain           drivetrain    2, 11, 3, 20    
+// Endgame              motor         5               
+// Flywheel             motor         7               
+// Roller               motor         8               
 // Intake               motor         9               
-// Flywheel             motor         10              
-// Roller               motor         1               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
@@ -55,24 +56,34 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  Drivetrain.setStopping(hold);
+  Drivetrain.setStopping(coast);
   Flywheel.setStopping(coast);
   Intake.setStopping(coast);
   Roller.setStopping(coast);
-  
-  //Auton starts here:  
-  Drivetrain.driveFor(reverse, 2, inches , 400, rpm);
-  Roller.spinFor(reverse, .3, rev);
-  Drivetrain.driveFor(forward, 2, inches , 400, rpm);
-  Drivetrain.turnFor(left , 5, degrees);
-  Intake.spinFor(forward, 5, rev);
-  Flywheel.spinFor(forward, 2, seconds, 550, rpm);
-  wait(.5, seconds);
-  Flywheel.spinFor(forward, 2, seconds, 550, rpm);
+  Endgame.setStopping(hold);
+  // Auton starts here:  
+  Flywheel.spinFor(forward, 200, rev, 570, rpm, false);
+  // Drivetrain.driveFor(forward, 1.5, inches);
 
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
+  // Flywheel.stop();
+  Flywheel.spinFor(forward, 200, rev, 100, rpm, false);
+  // Drivetrain.driveFor(reverse, 2.6, inches , 400, rpm, false);
+  // Roller.spinFor(reverse, .5, rev);
+  // Drivetrain.driveFor(forward,  2, inches);
+  // Drivetrain.turnFor(8, degrees);
+  wait(6, seconds);
+  Intake.spinFor(reverse, 2, rev);
+  wait(3, seconds);
+  Intake.spinFor(reverse, 2.8, rev);
+  
+  // Drivetrain.turnFor(-27, degrees);
+  // Drivetrain.driveFor(forward,  15, inches);
+  // Drivetrain.turnFor(47, degrees,false);
+
+
+  //Skills cont:
+  // Drivetrain.turnFor(100, degrees, 300, rpm);
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -88,19 +99,11 @@ void autonomous(void) {
 void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
-    // This is the main execution loop for the user control program.
-    // Each time through the loop your program should update motor + servo
-    // values based on feedback from the joysticks.
-    Drivetrain.setStopping(coast);
-    Flywheel.setStopping(coast);
-    Intake.setStopping(coast);
-    Roller.setStopping(coast);
-    
-    // ........................................................................
-    // Insert user code here. This is where you use the joystick values to
-    // update your motors, etc.
-    // ........................................................................
-
+   Drivetrain.setStopping(coast);
+   Flywheel.setStopping(coast);
+   Intake.setStopping(coast);
+   Roller.setStopping(coast);
+   Endgame.setStopping(hold);
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
   }
