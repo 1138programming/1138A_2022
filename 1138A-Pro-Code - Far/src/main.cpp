@@ -62,21 +62,19 @@ void autonomous(void) {
   Roller.setStopping(coast);
   Endgame.setStopping(hold);
   // Auton starts here:  
-
-  //Roller Code:
-  
-  // Flywheel.spinFor(forward, 200, rev, 570, rpm, false);
+  Flywheel.spinFor(forward, 200, rev, 570, rpm, false);
   // Drivetrain.driveFor(forward, 1.5, inches);
+
   // Flywheel.stop();
-  // Flywheel.spinFor(forward, 200, rev, 100, rpm, false);
+  Flywheel.spinFor(forward, 200, rev, 100, rpm, false);
   // Drivetrain.driveFor(reverse, 2.6, inches , 400, rpm, false);
   // Roller.spinFor(reverse, .5, rev);
   // Drivetrain.driveFor(forward,  2, inches);
   // Drivetrain.turnFor(8, degrees);
-  // wait(6, seconds);
-  // Intake.spinFor(reverse, 2, rev);
-  // wait(3, seconds);
-  // Intake.spinFor(reverse, 2.8, rev);
+  wait(6, seconds);
+  Intake.spinFor(reverse, 2, rev);
+  wait(3, seconds);
+  Intake.spinFor(reverse, 2.8, rev);
   
   // Drivetrain.turnFor(-27, degrees);
   // Drivetrain.driveFor(forward,  15, inches);
