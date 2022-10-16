@@ -64,7 +64,8 @@ void autonomous(void) {
   // Auton starts here:  
 
   //Roller Code:
-  
+  Drivetrain.driveFor(reverse, 3, inches, false);
+  Roller.spinFor(forward, 0.5, rev);
   // Flywheel.spinFor(forward, 200, rev, 570, rpm, false);
   // Drivetrain.driveFor(forward, 1.5, inches);
   // Flywheel.stop();
