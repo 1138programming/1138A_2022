@@ -9,7 +9,8 @@ extern motor Endgame;
 extern motor Flywheel;
 extern motor Roller;
 extern motor Intake;
-
+extern motor leftMotorA;
+extern motor rightMotorA;
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
  * 

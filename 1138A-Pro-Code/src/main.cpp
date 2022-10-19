@@ -45,6 +45,39 @@ void pre_auton(void) {
   // Example: clearing encoders, setting servo positions, ...
 }
 
+double kP = 0.0;
+double kI = 0.0;
+double kD = 0.0;
+
+int error;
+int prevError;
+int derivative;
+int totalError;
+
+int desiredValue = 200;
+
+bool enableDriveCode = true;
+
+int drivePID (){
+  while (true) {
+    int leftMotorPos = leftMotorA.position(degrees);
+    int rightMotorPos = rightMotorA.position(degrees);
+
+    int AveragePos = (leftMotorPos + rightMotorPos) / 2;
+    
+    error = AveragePos - desiredValue;
+
+    totalError += error;
+    
+    double motorPower = (error * kP + derivative * kD + totalError * kI);
+
+    prevError = error;
+    vex::task::sleep(20);
+  }
+  return 1;
+}
+
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              Autonomous Task                              */
@@ -56,16 +89,16 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
+  vex::task DriveWithPID(drivePID);
   Drivetrain.setStopping(coast);
   Flywheel.setStopping(coast);
   Intake.setStopping(coast);
   Roller.setStopping(coast);
   Endgame.setStopping(hold);
   // Auton starts here:  
-
   //Roller Code:
   Drivetrain.driveFor(reverse, 3, inches, false);
-  Roller.spinFor(forward, 0.5, rev);
+  Roller.spinFor(reverse, 0.5, rev);
   // Flywheel.spinFor(forward, 200, rev, 570, rpm, false);
   // Drivetrain.driveFor(forward, 1.5, inches);
   // Flywheel.stop();

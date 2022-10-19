@@ -66,7 +66,7 @@ void autonomous(void) {
   // Drivetrain.driveFor(forward, 1.5, inches);
   Drivetrain.driveFor(reverse, 9, inches);
   Drivetrain.turnFor(-60, degrees, false);
-  Roller.spinFor(forward, 0.9, rev);
+  Roller.spinFor(forward, 1.2, rev);
 
   // Flywheel.stop();
   // Flywheel.spinFor(forward, 200, rev, 100, rpm, false);
