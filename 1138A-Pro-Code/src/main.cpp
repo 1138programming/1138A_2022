@@ -69,8 +69,14 @@ int drivePID (){
 
     totalError += error;
     
-    double motorPower = (error * kP + derivative * kD + totalError * kI);
+    double lateralMotorPower = (error * kP + derivative * kD + totalError * kI);
 
+    double lateralMotorPowerPCT = lateralMotorPower / 100;
+
+    // double lateralMotorPowerRPM = lateralMotorPowerPCT * 200;
+
+    Drivetrain.setDriveVelocity(lateralMotorPowerPCT, percent);
+    Drivetrain.drive(forward);
     prevError = error;
     vex::task::sleep(20);
   }
